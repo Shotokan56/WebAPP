@@ -101,6 +101,14 @@ namespace WebAPP.Areas.CMS.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [HttpPost]
+        public ActionResult GetDataList(int currentPage, int itemPerPage)
+        {
+            var url = PartialView("ListUserPatial", db.Users.Skip(itemPerPage * currentPage-1).Take(itemPerPage).ToList());
+            return Json(new { success = true, url = url });
+        }
+
         private void Validate(User user)
         {
             ModelState.Clear();

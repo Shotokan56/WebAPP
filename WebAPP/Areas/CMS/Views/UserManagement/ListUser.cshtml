@@ -12,28 +12,61 @@
 <div id="lstReplace">
     @{ Html.RenderAction("RenderListUser", "UserManagement"); }
 </div>
-<div id ="pager">
-  
+<div id="pager">
+
 </div>
+@Html.Hidden("ItemPerPage", new { value = 2 })
 
 
-<script type="text/javascript">
-    //Set size popup
-    $(function () {
-        $(".modal-link").on("click", function (e) {
-            $("#modal-dialog").removeClass();
-            $("#modal-dialog").addClass("modal-dialog");
-            $("#modal-dialog").addClass("size50");
+    <script type="text/javascript">
+        //Set size popup
+        $(function () {
+            $(".modal-link").on("click", function (e) {
+                $("#modal-dialog").removeClass();
+                $("#modal-dialog").addClass("modal-dialog");
+                $("#modal-dialog").addClass("size50");
+            });
         });
-    });
 
-    //Pager
-    $(function () {
-        var options = {
-            currentPage: 1,
-            totalPages: 10
+        //Pager
+        $(function () {
+            var options = {
+                currentPage: 1,
+                totalPages: 10,
+                onPageChanged: function (e, oldPage, newPage) {
+                    LoadDataList(oldPage, newPage);
+                }
+            }
+            $('#pager').bootstrapPaginator(options);
+        });
+
+        function LoadDataList(oldPage, newPage) {
+            var itemPerPage = $("#ItemPerPage").val();
+            if (itemPerPage < 1){
+                console.log("ItemPerPage Error");
+                return;
+            }
+
+            var inputData = {
+                currentPage: newPage,
+                itemPerPage: itemPerPage
+            }
+
+            $.ajax({
+                url: "GetDataList",
+                type: "POST",
+                data: inputData,
+                success: function (result) {
+                    if (result.success) {
+                        $("#lstReplace").load(result.url);
+                    } else {
+                        if (result.Message != "" || result.Message != "undefined")
+                            alert(result.Message);
+                    }
+                }
+            });
         }
 
-        $('#pager').bootstrapPaginator(options);
-    });
-</script>
+
+
+    </script>

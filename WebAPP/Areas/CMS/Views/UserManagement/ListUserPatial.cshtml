@@ -37,10 +37,10 @@
     $(function () {
         $.ajaxSetup({ cache: false });
         $("a[datamodal]").on("click", function (e) {
-            $('#myModalContent').load(this.href, function () {
-                $('#myModal').modal({
+            $("#myModalContent").load(this.href, function () {
+                $("#myModal").modal({
                     keyboard: true
-                }, 'show');
+                }, "show");
                 bindForm(this);
             });
             return false;
@@ -48,17 +48,17 @@
     });
 
     function bindForm(dialog) {
-        $('form', dialog).submit(function () {
+        $("form", dialog).submit(function () {
             $.ajax({
                 url: this.action,
                 type: this.method,
                 data: $(this).serialize(),
                 success: function (result) {
                     if (result.success) {
-                        $('#myModal').modal('hide');
-                        $('#lstReplace').load(result.url);
+                        $("#myModal").modal("hide");
+                        $("#lstReplace").load(result.url);
                     } else {
-                        $('#myModalContent').html(result);
+                        $("#myModalContent").html(result);
                         bindForm(dialog);
                         if (result.Message != "" || result.Message != "undefined")
                             alert(result.Message);

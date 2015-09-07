@@ -14,14 +14,14 @@
 
 <script>
     $(document).ready(function () {
-        $('form').submit(function () {
+        $("form").submit(function () {
             $.ajax({
                 url: this.action,
                 type: this.method,
                 data: $(this).serialize(),
                 success: function (result) {
                     if (result.success == true) {
-                        window.location.href = 'Index';
+                        window.location.href = "Index";
                     } else {
                         var content = $(result).find("#wrap");
                         $("form").empty().append(content);
